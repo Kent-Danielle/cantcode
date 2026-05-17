@@ -3,3 +3,7 @@ export const DESK_MODEL_PATH = "/assets/desk/scene.gltf";
 export const MUG_MODEL_PATH = "/assets/mug/scene.gltf";
 export const TELEPHONE_MODEL_PATH = "/assets/telephone/scene.gltf";
 export const WALL_ART_PATH_1 = "/assets/wall_art_1/scene.gltf";
+export const WALL_ART_PATH_2 = "/assets/wall_art_2/scene.gltf";
+export const KEYBOARD_MODEL_PATH = "/assets/keyboard/scene.gltf";
+export const MOUSE_MODEL_PATH = "/assets/mouse/scene.gltf";
+export const BOOKS_MODEL_PATH = "/assets/books/scene.gltf";

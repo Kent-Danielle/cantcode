@@ -1,9 +1,9 @@
 import { Center, useGLTF } from '@react-three/drei';
 import { useEffect, useRef } from 'react';
-import { TELEPHONE_MODEL_PATH } from '../../helpers/constants';
+import { KEYBOARD_MODEL_PATH } from '../../helpers/constants';
 
-function TelephoneModel() {
-  const { scene } = useGLTF(TELEPHONE_MODEL_PATH);
+function KeyboardModel() {
+  const { scene } = useGLTF(KEYBOARD_MODEL_PATH);
   const ref = useRef();
 
   useEffect(() => {
@@ -16,10 +16,10 @@ function TelephoneModel() {
   }, [scene]);
 
   return (
-    <Center scale={950} rotation={[0, 14.5, 0]} position={[75, -90, 270]}>
+    <Center scale={1.2} rotation={[0, Math.PI / 2, 0]} position={[210, -125, 40]}>
       <primitive ref={ref} object={scene} />
     </Center>
   );
 }
 
-export default TelephoneModel;
+export default KeyboardModel;

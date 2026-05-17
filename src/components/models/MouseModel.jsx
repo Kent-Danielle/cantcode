@@ -1,9 +1,9 @@
 import { Center, useGLTF } from '@react-three/drei';
 import { useEffect, useRef } from 'react';
-import { TELEPHONE_MODEL_PATH } from '../../helpers/constants';
+import { MOUSE_MODEL_PATH } from '../../helpers/constants';
 
-function TelephoneModel() {
-  const { scene } = useGLTF(TELEPHONE_MODEL_PATH);
+function MouseModel() {
+  const { scene } = useGLTF(MOUSE_MODEL_PATH);
   const ref = useRef();
 
   useEffect(() => {
@@ -16,10 +16,10 @@ function TelephoneModel() {
   }, [scene]);
 
   return (
-    <Center scale={950} rotation={[0, 14.5, 0]} position={[75, -90, 270]}>
+    <Center scale={45} rotation={[0, 1.8, 0]} position={[200, -135, -170]}>
       <primitive ref={ref} object={scene} />
     </Center>
   );
 }
 
-export default TelephoneModel;
+export default MouseModel;

@@ -7,6 +7,9 @@ import MugModel from './components/models/MugModel';
 import TelephoneModel from './components/models/TelephoneModel';
 import { WallModel } from './components/models/WallModel';
 import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
+import KeyboardModel from './components/models/KeyboardModel';
+import MouseModel from './components/models/MouseModel';
+import BooksModel from './components/models/BooksModel';
 
 function GrainFilter() {
   return (
@@ -60,8 +63,8 @@ function App() {
           camera={{
             position: [720, 30, 0],
             fov: 32,
-            near: 200,
-            far: 1200,
+            near: 10,
+            far: 3000,
           }}
           shadows
         >
@@ -81,7 +84,7 @@ function App() {
             shadow-radius={20}
           />
 
-          <axesHelper args={[1000]} />
+          {/* <axesHelper args={[1000]} /> */}
 
           <mesh ref={targetRef} position={[0, 0, 0]} visible={false} />
 
@@ -94,11 +97,14 @@ function App() {
             <DeskModel />
             <MugModel />
             <TelephoneModel />
+            <KeyboardModel />
+            <MouseModel />
+            <BooksModel />
           </Suspense>
           <EffectComposer>
             <DepthOfField
-              worldFocusDistance={600} 
-              worldFocusRange={650} 
+              worldFocusDistance={600}
+              worldFocusRange={650}
               bokehScale={8}
             />
           </EffectComposer>
