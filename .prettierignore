@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.vscode/
+.idea/
+.env
+.env.local
+*.log
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+public/assets/
+public/assets/**/textures/
+public/assets/**/license.txt
+.cache/
+/.turbo
