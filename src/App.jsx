@@ -6,6 +6,7 @@ import DeskModel from './components/models/DeskModel';
 import MugModel from './components/models/MugModel';
 import TelephoneModel from './components/models/TelephoneModel';
 import { WallModel } from './components/models/WallModel';
+import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
 
 function GrainFilter() {
   return (
@@ -27,7 +28,7 @@ function GrainFilter() {
 function App() {
   const [showScene, setShowScene] = useState(true);
   const targetRef = useRef();
-  
+
   return (
     <div
       style={{
@@ -37,7 +38,7 @@ function App() {
         background: '#c2c9d4',
       }}
     >
-      <button
+      {/* <button
         onClick={() => setShowScene((s) => !s)}
         style={{
           position: 'absolute',
@@ -52,15 +53,15 @@ function App() {
         }}
       >
         {showScene ? 'Hide Scene' : 'Show Scene'}
-      </button>
+      </button> */}
 
       {showScene && (
         <Canvas
           camera={{
             position: [720, 30, 0],
             fov: 32,
-            near: 0.1,
-            far: 10000,
+            near: 200,
+            far: 1200,
           }}
           shadows
         >
@@ -80,6 +81,8 @@ function App() {
             shadow-radius={20}
           />
 
+          <axesHelper args={[1000]} />
+
           <mesh ref={targetRef} position={[0, 0, 0]} visible={false} />
 
           <directionalLight position={[1479, 2113, 2955]} intensity={0.4} />
@@ -92,6 +95,13 @@ function App() {
             <MugModel />
             <TelephoneModel />
           </Suspense>
+          <EffectComposer>
+            <DepthOfField
+              worldFocusDistance={600} 
+              worldFocusRange={650} 
+              bokehScale={8}
+            />
+          </EffectComposer>
         </Canvas>
       )}
 
@@ -101,4 +111,3 @@ function App() {
 }
 
 export default App;
-
