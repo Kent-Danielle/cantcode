@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { CRT_MONITOR_PATH } from '../../helpers/constants';
 
-function CrtMonitorModel() {
+function CrtMonitorModel({ children }) {
   const { scene } = useGLTF(CRT_MONITOR_PATH);
   const ref = useRef();
 
@@ -19,6 +19,7 @@ function CrtMonitorModel() {
   return (
     <Center scale={1.5} position={[-30, 10, 0]}>
       <primitive ref={ref} object={scene} />
+      {children}
     </Center>
   );
 }

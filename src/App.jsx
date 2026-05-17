@@ -10,23 +10,8 @@ import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
 import KeyboardModel from './components/models/KeyboardModel';
 import MouseModel from './components/models/MouseModel';
 import BooksModel from './components/models/BooksModel';
-
-function GrainFilter() {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 10,
-        opacity: 0.09,
-        backgroundImage:
-          'radial-gradient(circle, rgba(255,255,255,0.14) 1.5px, transparent 1.5px), radial-gradient(circle, rgba(255,255,255,0.08) 1.5px, transparent 1.5px)',
-        backgroundSize: '4px 4px, 8px 8px',
-      }}
-    />
-  );
-}
+import { GrainFilter } from './components/common/GrainFilter';
+import { MiniHtmlContainer } from './components/mini-container/MiniHtmlContainer';
 
 function App() {
   const [showScene, setShowScene] = useState(true);
@@ -41,23 +26,6 @@ function App() {
         background: '#c2c9d4',
       }}
     >
-      {/* <button
-        onClick={() => setShowScene((s) => !s)}
-        style={{
-          position: 'absolute',
-          top: 20,
-          left: 20,
-          zIndex: 20,
-          padding: '8px 12px',
-          background: '#ffffffcc',
-          border: '1px solid #ccc',
-          borderRadius: 6,
-          cursor: 'pointer',
-        }}
-      >
-        {showScene ? 'Hide Scene' : 'Show Scene'}
-      </button> */}
-
       {showScene && (
         <Canvas
           camera={{
@@ -89,11 +57,12 @@ function App() {
           <mesh ref={targetRef} position={[0, 0, 0]} visible={false} />
 
           <directionalLight position={[1479, 2113, 2955]} intensity={0.4} />
-          <OrbitControls enableDamping />
 
           <Suspense fallback={null}>
             <WallModel />
-            <CrtMonitorModel />
+            <CrtMonitorModel>
+              <MiniHtmlContainer />
+            </CrtMonitorModel>
             <DeskModel />
             <MugModel />
             <TelephoneModel />
@@ -117,3 +86,4 @@ function App() {
 }
 
 export default App;
+
