@@ -15,7 +15,7 @@ export function Splash({ progress, subtitle, fadeOut = false }) {
         fontFamily:
           "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace",
         opacity: fadeOut ? 0 : 1,
-        transition: 'opacity 600ms ease-out',
+        transition: 'opacity 1500ms cubic-bezier(0.65, 0, 0.35, 1)',
         pointerEvents: fadeOut ? 'none' : 'auto',
       }}
     >

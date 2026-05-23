@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 const PHASE_DURATIONS = {
-  collapseVertical: 220,
-  collapseHorizontal: 180,
-  fadeOut: 250,
+  collapseVertical: 500,
+  collapseHorizontal: 400,
+  fadeOut: 600,
 };
 
 const TOTAL_DURATION =
@@ -84,7 +84,7 @@ export function CrtShutoffOverlay({ active, onComplete }) {
             'radial-gradient(ellipse at center, #f8f8e8 0%, #d0d0b8 60%, #888 100%)',
           transformOrigin: 'center center',
           transitionProperty: 'transform, opacity',
-          transitionTimingFunction: 'cubic-bezier(0.6, 0, 0.4, 1)',
+          transitionTimingFunction: 'cubic-bezier(0.65, 0, 0.35, 1)',
           willChange: 'transform, opacity',
           boxShadow: '0 0 80px rgba(255, 255, 220, 0.6)',
           ...beamStyle,

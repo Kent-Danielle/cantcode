@@ -12,7 +12,7 @@ export function LoadingScreen({ firstFrameRendered }) {
   useEffect(() => {
     if (!ready) return;
     const fadeStart = setTimeout(() => setFadeOut(true), 100);
-    const unmount = setTimeout(() => setHidden(true), 700);
+    const unmount = setTimeout(() => setHidden(true), 1700);
     return () => {
       clearTimeout(fadeStart);
       clearTimeout(unmount);
