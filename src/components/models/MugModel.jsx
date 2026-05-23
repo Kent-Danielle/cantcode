@@ -23,3 +23,5 @@ function MugModel() {
 }
 
 export default MugModel;
+
+useGLTF.preload(MUG_MODEL_PATH);

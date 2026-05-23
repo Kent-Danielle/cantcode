@@ -24,3 +24,5 @@ function DeskModel() {
 }
 
 export default DeskModel;
+
+useGLTF.preload(DESK_MODEL_PATH);

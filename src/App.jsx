@@ -1,109 +1,45 @@
-import { useThree } from '@react-three/fiber';
-import { Canvas } from '@react-three/fiber';
-import { Suspense, useEffect, useState } from 'react';
-import CrtMonitorModel from './components/models/CrtMonitorModel';
-import DeskModel from './components/models/DeskModel';
-import MugModel from './components/models/MugModel';
-import TelephoneModel from './components/models/TelephoneModel';
-import { WallModel } from './components/models/WallModel';
-import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
-import KeyboardModel from './components/models/KeyboardModel';
-import MouseModel from './components/models/MouseModel';
-import BooksModel from './components/models/BooksModel';
-import { GrainFilter } from './components/common/GrainFilter';
-import { MiniHtmlContainer } from './components/mini-container/MiniHtmlContainer';
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useViewportRoute, isPortraitViewport } from './hooks/useViewportRoute';
 
-const CAMERA_CONFIG = {
-  position: [720, 30, 0],
-  fov: 32,
-  near: 10,
-  far: 3000,
-};
+const Landing = lazy(() => import('./pages/Landing.jsx'));
+const Portfolio = lazy(() => import('./pages/Portfolio.jsx'));
 
-const DOF_PROPS = {
-  worldFocusDistance: 600,
-  worldFocusRange: 650,
-  bokehScale: 8,
-};
-
-const SHADOW_MAP_SIZE = [4096, 4096];
-
-function SceneReadyInvalidator() {
-  const { invalidate } = useThree();
-  useEffect(() => {
-    let i = 0;
-    const pump = () => { invalidate(); if (++i < 10) requestAnimationFrame(pump); };
-    pump();
-  }, []);
+function ViewportRouter() {
+  useViewportRoute();
   return null;
 }
 
-function Scene() {
-  return (
-    <>
-      <directionalLight
-        color="#fbfcd8"
-        position={[1000, 1000, 1000]}
-        intensity={3}
-        castShadow
-        shadow-mapSize={SHADOW_MAP_SIZE}
-        shadow-camera-left={-800}
-        shadow-camera-right={800}
-        shadow-camera-top={800}
-        shadow-camera-bottom={-800}
-        shadow-camera-near={1}
-        shadow-camera-far={3000}
-        shadow-bias={-0.0005}
-        shadow-radius={20}
-      />
-
-      <directionalLight position={[1479, 2113, 2955]} intensity={0.4} />
-
-      <Suspense fallback={null}>
-        <WallModel />
-        <CrtMonitorModel>
-          <MiniHtmlContainer />
-        </CrtMonitorModel>
-        <DeskModel />
-        <MugModel />
-        <TelephoneModel />
-        <KeyboardModel />
-        <MouseModel />
-        <BooksModel />
-        <SceneReadyInvalidator />
-      </Suspense>
-
-      <EffectComposer>
-        <DepthOfField {...DOF_PROPS} />
-      </EffectComposer>
-    </>
-  );
-}
-
-function App() {
-  const [showScene, setShowScene] = useState(true);
-
+function RouteFallback() {
   return (
     <div
       style={{
         width: '100vw',
         height: '100vh',
-        position: 'relative',
         background: '#c2c9d4',
       }}
-    >
-      {showScene && (
-        <Canvas
-          camera={CAMERA_CONFIG}
-          shadows
-          frameloop="demand"
-        >
-          <Scene />
-        </Canvas>
-      )}
+    />
+  );
+}
 
-      <GrainFilter />
-    </div>
+function App() {
+  const initialIsPortrait =
+    isPortraitViewport() &&
+    new URLSearchParams(window.location.search).get('force') !== '3d';
+
+  return (
+    <>
+      <ViewportRouter />
+      <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          <Route
+            path="/"
+            element={initialIsPortrait ? <Portfolio /> : <Landing />}
+          />
+          <Route path="/portfolio" element={<Portfolio />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 }
 

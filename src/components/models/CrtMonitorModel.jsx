@@ -25,3 +25,5 @@ function CrtMonitorModel({ children }) {
 }
 
 export default CrtMonitorModel;
+
+useGLTF.preload(CRT_MONITOR_PATH);

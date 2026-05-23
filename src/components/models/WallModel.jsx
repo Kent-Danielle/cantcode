@@ -42,6 +42,9 @@ function WallArt2Model() {
   );
 }
 
+useGLTF.preload(WALL_ART_PATH_1);
+useGLTF.preload(WALL_ART_PATH_2);
+
 export function WallModel() {
   return (
     <group position={[0, 0, 0]} rotation={[0, 0, 0]}>

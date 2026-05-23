@@ -23,3 +23,5 @@ function KeyboardModel() {
 }
 
 export default KeyboardModel;
+
+useGLTF.preload(KEYBOARD_MODEL_PATH);

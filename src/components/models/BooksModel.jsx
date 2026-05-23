@@ -23,3 +23,5 @@ function BooksModel() {
 }
 
 export default BooksModel;
+
+useGLTF.preload(BOOKS_MODEL_PATH);

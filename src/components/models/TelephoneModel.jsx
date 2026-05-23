@@ -23,3 +23,5 @@ function TelephoneModel() {
 }
 
 export default TelephoneModel;
+
+useGLTF.preload(TELEPHONE_MODEL_PATH);

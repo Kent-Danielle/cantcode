@@ -1,12 +1,17 @@
 import { Html } from '@react-three/drei';
 
-export function MiniHtmlContainer() {
+export function MiniHtmlContainer({ onPowerOff }) {
   return (
     <Html
       transform
       distanceFactor={100}
       position={[0, -63, -73]}
       rotation={[0, Math.PI / 2, 0]}
+      occlude={false}
+      style={{
+        pointerEvents: 'auto',
+        touchAction: 'pan-y',
+      }}
     >
       <div
         style={{
@@ -16,16 +21,16 @@ export function MiniHtmlContainer() {
           borderRadius: '35px',
           position: 'relative',
           overflow: 'hidden',
-          display: 'flex', // ← add these
+          display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          touchAction: 'pan-y',
           maskImage:
             'radial-gradient(ellipse at center, black 60%, transparent 90%)',
           WebkitMaskImage:
             'radial-gradient(ellipse at center, black 60%, transparent 90%)',
         }}
       >
-        {/* The actual website */}
         <iframe
           src="https://kent-danielle.github.io/KentCode/"
           title="CantCode Website"
@@ -34,10 +39,10 @@ export function MiniHtmlContainer() {
             height: '95%',
             border: 'none',
             borderRadius: '35px',
+            touchAction: 'pan-y',
           }}
         />
 
-        {/* CRT scanlines overlay */}
         <div
           style={{
             position: 'absolute',
@@ -57,7 +62,6 @@ export function MiniHtmlContainer() {
           }}
         />
 
-        {/* Vignette — darkens edges to blend into the 3D bezel */}
         <div
           style={{
             position: 'absolute',
@@ -70,7 +74,6 @@ export function MiniHtmlContainer() {
           }}
         />
 
-        {/* Green tint to match CRT phosphor look */}
         <div
           style={{
             position: 'absolute',
@@ -79,6 +82,26 @@ export function MiniHtmlContainer() {
             borderRadius: '35px',
             background: 'rgba(0, 20, 0, 0.15)',
             zIndex: 12,
+          }}
+        />
+
+        <button
+          type="button"
+          aria-label="Open full portfolio"
+          onClick={onPowerOff}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '-65px',
+            width: '60px',
+            height: '60px',
+            transform: 'translateX(-50%)',
+            background: 'transparent',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            zIndex: 20,
+            padding: 0,
           }}
         />
       </div>

@@ -23,3 +23,5 @@ function MouseModel() {
 }
 
 export default MouseModel;
+
+useGLTF.preload(MOUSE_MODEL_PATH);
