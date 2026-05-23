@@ -1,5 +1,5 @@
 import { useThree, Canvas } from '@react-three/fiber';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
 import { useNavigate } from 'react-router-dom';
 import CrtMonitorModel from '../components/models/CrtMonitorModel';
@@ -31,16 +31,35 @@ const DOF_PROPS = {
 const SHADOW_MAP_SIZE = [4096, 4096];
 
 function SceneReadyInvalidator({ onReady }) {
-  const { invalidate } = useThree();
+  const { invalidate, gl, scene, camera } = useThree();
+  const onReadyRef = useRef(onReady);
+
   useEffect(() => {
+    onReadyRef.current = onReady;
+  }, [onReady]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    try {
+      gl.compile(scene, camera);
+    } catch {
+      // ignore — fall through to frame pumping
+    }
+
     let i = 0;
     const pump = () => {
+      if (cancelled) return;
       invalidate();
-      if (++i < 10) requestAnimationFrame(pump);
-      else onReady?.();
+      if (++i < 8) requestAnimationFrame(pump);
+      else onReadyRef.current?.();
     };
     pump();
-  }, [invalidate, onReady]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [invalidate, gl, scene, camera]);
   return null;
 }
 
@@ -91,9 +110,12 @@ export default function Landing() {
   const [firstFrameRendered, setFirstFrameRendered] = useState(false);
   const [shutoff, setShutoff] = useState(false);
 
-  const handleShutoff = () => {
-    setShutoff(true);
-  };
+  const handleShutoff = useCallback(() => setShutoff(true), []);
+  const handleFirstFrame = useCallback(() => setFirstFrameRendered(true), []);
+  const handleShutoffComplete = useCallback(
+    () => navigate('/portfolio'),
+    [navigate]
+  );
 
   return (
     <div
@@ -106,20 +128,14 @@ export default function Landing() {
       }}
     >
       <Canvas camera={CAMERA_CONFIG} shadows frameloop="demand">
-        <Scene
-          onShutoff={handleShutoff}
-          onFirstFrame={() => setFirstFrameRendered(true)}
-        />
+        <Scene onShutoff={handleShutoff} onFirstFrame={handleFirstFrame} />
       </Canvas>
 
       <GrainFilter />
 
       <LoadingScreen firstFrameRendered={firstFrameRendered} />
 
-      <CrtShutoffOverlay
-        active={shutoff}
-        onComplete={() => navigate('/portfolio')}
-      />
+      <CrtShutoffOverlay active={shutoff} onComplete={handleShutoffComplete} />
     </div>
   );
 }

@@ -8,6 +8,7 @@ export function MiniHtmlContainer({ onPowerOff }) {
       position={[0, -63, -73]}
       rotation={[0, Math.PI / 2, 0]}
       occlude={false}
+      zIndexRange={[20, 0]}
       style={{
         pointerEvents: 'auto',
         touchAction: 'pan-y',

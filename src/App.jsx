@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useViewportRoute, isPortraitViewport } from './hooks/useViewportRoute';
+import { Splash } from './components/common/Splash';
 
 const Landing = lazy(() => import('./pages/Landing.jsx'));
 const Portfolio = lazy(() => import('./pages/Portfolio.jsx'));
@@ -11,15 +12,7 @@ function ViewportRouter() {
 }
 
 function RouteFallback() {
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        background: '#c2c9d4',
-      }}
-    />
-  );
+  return <Splash />;
 }
 
 function App() {
