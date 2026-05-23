@@ -105,6 +105,53 @@ export function MiniHtmlContainer({ onPowerOff }) {
             padding: 0,
           }}
         />
+
+        {/* TEMP: visible shortcut into the modern portfolio. Remove once the
+            in-iframe nav is wired up. */}
+        <button
+          type="button"
+          onClick={onPowerOff}
+          style={{
+            position: 'absolute',
+            top: '18px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '7px 22px 9px',
+            background: '#f0a04b',
+            color: '#1a1a1a',
+            border: '2px solid #1a1a1a',
+            borderBottom: '4px solid #1a1a1a',
+            borderRight: '4px solid #1a1a1a',
+            cursor: 'pointer',
+            fontFamily:
+              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace",
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 0 0 2px #f0a04b, 0 0 14px rgba(240, 160, 75, 0.45)',
+            zIndex: 15,
+          }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.borderBottomWidth = '2px';
+            e.currentTarget.style.borderRightWidth = '2px';
+            e.currentTarget.style.transform =
+              'translateX(-50%) translate(2px, 2px)';
+          }}
+          onMouseUp={(e) => {
+            e.currentTarget.style.borderBottomWidth = '4px';
+            e.currentTarget.style.borderRightWidth = '4px';
+            e.currentTarget.style.transform = 'translateX(-50%)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderBottomWidth = '4px';
+            e.currentTarget.style.borderRightWidth = '4px';
+            e.currentTarget.style.transform = 'translateX(-50%)';
+          }}
+        >
+          ▸ View Full Portfolio
+        </button>
       </div>
     </Html>
   );
