@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const TRANSITION_MS = 1500;
-const TRANSITION_EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+const TRANSITION_EASE_IN = 'cubic-bezier(0.55, 0, 0.67, 0)';
+const TRANSITION_EASE_OUT = 'cubic-bezier(0.33, 1, 0.68, 1)';
 
 export default function Portfolio() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export default function Portfolio() {
           inset: 0,
           background: '#000',
           opacity: overlayActive ? 1 : 0,
-          transition: `opacity ${TRANSITION_MS}ms ${TRANSITION_EASE}`,
+          transition: `opacity ${TRANSITION_MS}ms ${phase === 'leaving' ? TRANSITION_EASE_IN : TRANSITION_EASE_OUT}`,
           pointerEvents: overlayActive ? 'auto' : 'none',
           zIndex: 9999,
         }}
