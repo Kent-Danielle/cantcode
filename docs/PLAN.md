@@ -48,6 +48,23 @@ Click something inside the CRT screen → smooth zoom/expand → unmount the 3D 
 - When the modern portfolio replaces the iframe content (later), the click handler moves inside the iframe and uses `postMessage`.
 - Browser back button should work — that's a free win from using react-router.
 
+### Sub-feature: auto-route portrait / mobile viewports straight to `/portfolio`
+The 3D scene is framed for landscape (camera fov 32 at `[720, 30, 0]` — see [App.jsx:16](src/App.jsx)). On portrait phones the framing is ruined: the CRT shrinks, the desk overflows, and the "fake monitor as portfolio" illusion collapses.
+
+**Decision rule (first paint):**
+- Detect on mount, **before** the `<Canvas>` is rendered, using `window.matchMedia('(orientation: portrait) and (max-width: 900px)')` (or a more conservative aspect-ratio check, e.g. `aspect-ratio < 1`).
+- If it matches → render `/portfolio` directly (no flash of 3D, no Canvas mount, no GPU work).
+- If it doesn't match → render the 3D landing as today.
+
+**Why a media query and not just `userAgent`:** desktop users who shrink their window narrow should also get the clean portfolio. iPad-in-landscape should get the 3D scene. Orientation + aspect ratio captures both correctly; UA sniffing doesn't.
+
+**Re-evaluation on resize / rotate:**
+- Listen to the media query's `change` event. If the user rotates landscape → portrait while on `/`, route them to `/portfolio` (and unmount Canvas — same kill switch as §2's expand flow). Going portrait → landscape does **not** auto-route back; that would be jarring. Provide a "View the 3D version" link on the portfolio page header for that case.
+
+**Escape hatch:** include a `?force=3d` query param that bypasses the redirect, so we can test the scene on a phone during development without the device-detection getting in the way.
+
+**Where the code lives:** a small `useViewportRoute()` hook called at the top of `App.jsx`, before `<Canvas>` is even considered for mounting. Avoid the "render 3D for one frame, then redirect" anti-pattern — that wastes a GPU upload and looks broken.
+
 ---
 
 ## 3. Bug: iframe doesn't scroll on touchscreens
@@ -131,7 +148,7 @@ These are wins everyone gets, not preset-gated.
    4. Touch scroll inside iframe (§3).
    5. Loading screen with `useProgress` (§4).
 3. **Quality presets** (§5) — once §6 is done the "High" baseline is sane.
-4. **Expand-to-portfolio flow** (§2) — biggest feature, do last.
+4. **Expand-to-portfolio flow + portrait auto-route** (§2) — biggest feature, do last. Both sub-features share the modern-portfolio page as a prerequisite, so build them together.
 
 ---
 
@@ -142,6 +159,8 @@ These are wins everyone gets, not preset-gated.
 3. Do we want a real URL (`/portfolio`) for the modern view, or keep it as in-app state only? URL gives free deep-linking and back-button support.
 4. Acceptable default quality on mobile — silently force Low, or always ask?
 5. Is the current iframe target (`kent-danielle.github.io/KentCode/`) a placeholder until the modern page exists, or do we keep it as a fallback?
+6. Portrait-redirect threshold — strict orientation (`portrait` + `max-width: 900px`), or pure aspect-ratio (`aspect-ratio < 1`)? Latter catches narrow desktop windows too; former is phone-only.
+7. Should there be a "View the 3D version" link on the portfolio header for users routed there automatically, or hide it to keep the modern page clean?
 
 ---
 
